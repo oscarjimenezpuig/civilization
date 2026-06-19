@@ -16,10 +16,4 @@ double normal(double m,double dt) {
 }
 
 
-//prueba
 
-using namespace std;
-
-int main() {
-    cout<<uniform(3,7)<<endl;
-}

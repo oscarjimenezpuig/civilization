@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <vector>
 
 using u1 = unsigned char;
 using u2 = unsigned short;

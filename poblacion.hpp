@@ -10,10 +10,11 @@ class Persona {
         };
         u1 gen;
     public:
-        Persona(u1 eda=0,u1 genoma=-1); //define una persona
-        s1 empareja(vector<Persona>::iterator ppersona); //empareja a una persona con p
+        Persona(u1 genoma,u1 eda=0); //define una persona
+        s1 empareja(std::vector<Persona>::iterator ppersona); //empareja a una persona con p y devuelve el numero de nacimientos
         bool muere(); //comprueba si la persona muere
         void evolucion(); //suma un año a la persona
+        void info(); //imprime toda la informacion de una persona
 };
 
 
