@@ -1,20 +1,68 @@
 #include "general.hpp"
 
+//REGLAS
+//Emparejamiento de 15 a 45 años
+//Probabilidad de nacimiento 10
+//Trabajadores posibles desde los 15 a los 65, no puede ser heroe
+//Soldados des de los 20 a los 40 o los heroes siempre
+//El precio de un acre oscila entre los 16 y los 27 bushels
+//Un trabajador labra 10 acres un bushel sirve para 2 acres
+//Produccion de acre oscila entre 0 y 6 bushels
+
 class Persona {
-    private:
-        struct {
-            u1 eda : 7; //edad actual
-            u1 edm : 7; //edad maxima
-            u1 emp : 1; //emparejado
-            u1 sex : 1; //sexo
-        };
-        u1 gen;
     public:
-        Persona(u1 genoma,u1 eda=0); //define una persona
-        s1 empareja(std::vector<Persona>::iterator ppersona); //empareja a una persona con p y devuelve el numero de nacimientos
-        bool muere(); //comprueba si la persona muere
-        void evolucion(); //suma un año a la persona
-        void info(); //imprime toda la informacion de una persona
+        struct {
+            u1 emp : 1; //emparejado
+            u1 sol : 1; //soldado
+            u1 trb : 1; //trabajador
+            u1 sex : 1; //sexo
+            u1 inf : 1; //mira si tiene alguna infeccion (y por tanto muere en la verificacion muerte)
+        };
+        u1 eda=0;
+        u1 edm=0;
+        u1 gen=0;
+        constexpr Persona() : emp(0),sol(0),trb(0),sex(0),inf(0),eda(0),edm(0),gen(0) {}; //constructor por defecto
+        Persona (u1 genoma,u1 edad=0); //se crea una persona no nula 
+        void crece(); //suma un año a la persona
+        Persona empareja(std::vector<Persona> personas); //se empareja
+        Persona reproduce(Persona p); //mira si tiene un hijo con la persona p
+        bool muere(); //checkea si muere de muerte natural
+        bool is_nul(); //dice si la persona es nula
+        void info();
+};
+
+constexpr Persona PERNUL=Persona(); //Persona nula
+
+class Poblacion {
+    private:
+        std::string nom;
+        u2 ext; //extension en acres
+        u2 gra; //grano en bushels
+        std::vector<Persona> pob; //personas que componen la poblacion
+        bool pobins(Persona p); //inserta una nueva persona en la poblacion
+    public:
+        Poblacion(std::string nombre,u2 hab_ini=2,u2 ext_ini=20,u2 gra_ini=60); //constructor
+        u2 pob_get(); //numero de habitantes
+        u2 ext_get(); //extension
+        u2 gra_get(); //grano
+        u2 trb_max(); //numero maximo de personas que pueden ser trabajadores
+        u2 sol_max(); //numero maximo de personas que pueden ser soldado
+        bool trb_set(u2 trb); //establecer el numero de trabajadores de la ciudad
+        bool sol_set(u2 sol); //establecer el numero de soldados de la ciudad
+        void crecer(); //hace crecer a la poblacion (envejecer un año)
+        u2 reproducir(); //empareja y reproduce a la poblacion dando el numero de nacimientos
+        u2 morir(); //hace morir a la poblacion, dando el numero de muertes
+        short comprar(u2 compra,u2 disponibles,u2 precio); 
+        //compra una serie de acres de unos disponibles a un precio concreto
+        //0: correcto
+        //-1: no hay tantos disponibles
+        //-2: no tienes grano suficiente para comprar
+        short labrar(u2 trabajadores,u2 grano);
+        //>0: produccion de grano
+        //-1: no dispones de tantos trabajadores
+        //-2: no dispones de tanto grano
+        
+        void info();
 };
 
 
