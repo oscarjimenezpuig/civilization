@@ -118,7 +118,13 @@ Poblacion::Poblacion(std::string n,u2 hi,u2 ei,u2 gi) {
 }
 
 u2 Poblacion::pob_get() {
-    return this->pob.size();
+    u2 habitants=0;
+    Vptr it=this->pob.begin();
+    while(it!=this->pob.end()) {
+        if(!it->is_nul()) ++habitants;
+        it++;
+    }
+    return habitants;
 }
 
 u2 Poblacion::ext_get() {
@@ -234,8 +240,8 @@ short Poblacion::comprar(u2 c,u2 d,u2 p) {
     } else return -1;
 }
 
-short Poblacion::labrar(u2 e,u2 t,u2 g) {
-    constexpr u2 APT=10 //acres que labra un trabajador
+short Poblacion::labrar(u2 t,u2 g) {
+    constexpr u2 APT=10; //acres que labra un trabajador
     constexpr u2 APB=2; //acres con los que labras un bushel
     constexpr u1 MAP=6; //maxima produccion por acre
     constexpr u1 MIP=0; //minima produccion por acre
@@ -253,17 +259,39 @@ short Poblacion::labrar(u2 e,u2 t,u2 g) {
     } else return -1;
 }
 
-
-            
+std::string Poblacion::evento() {
+    constexpr int PER=40; //probabilidad evento ratas
+    constexpr int PEP=15; //probabilidad evento plaga
+    constexpr int PIN=50; //probabilidad de caer enfermo
+    constexpr int TMI=25; //tanto por ciento minimo de perdida por ratas
+    constexpr int TMA=100; //tanto por ciento maximo de perdida por ratas
+    std::ostringstream oss;
+    if(uniform(0,99)<PEP) {
+        oss<<"La enfermedad ha atacado a tu ciudad.";
+        Vptr it=this->pob.begin();
+        while(it!=this->pob.end()) {
+            if(!it->is_nul() && ((it->gen==0)||(it->gen<255 && uniform(0,99)<PIN))) it->inf=1;
+            it++;
+        }
+    }else if(uniform(0,99)<PER) {
+        int losed=this->gra*uniform(TMI,TMA)/100;
+        if(losed>0) {
+            oss<<"Las ratas visitan tu ciudad y han devorado "<<losed<<" bushels de grano.";
+            this->gra-=losed;
+        }
+    }
+    std::string res=oss.str();
+    return res;
+}           
 
 void Poblacion::info() {
     std::cout<<this->nom<<std::endl;
-    u2 habs=this->pob.size();
-    std::cout<<"    P: "<<habs<<" G: "<<this->gra<<" E: "<<this->ext<<std::endl;
-    for(int k=0;k<habs;k++) {
-        Persona p=this->pob[k];
-        std::cout<<"        ";
-        p.info();
+    u2 habs=this->pob_get();
+    std::cout<<"P: "<<habs<<" G: "<<this->gra<<" E: "<<this->ext<<std::endl;
+    Vptr it=this->pob.begin();
+    while(it!=this->pob.end()) {
+        it->info();
+        it++;
     }
 }
 
@@ -283,6 +311,7 @@ int main() {
         cout<<"Nacimientos="<<p.reproducir()<<endl;
         p.info();
         p.crecer();
+        cout<<p.evento()<<endl;
         getchar();
     }
     return 0;

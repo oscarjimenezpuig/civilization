@@ -8,6 +8,9 @@
 //El precio de un acre oscila entre los 16 y los 27 bushels
 //Un trabajador labra 10 acres un bushel sirve para 2 acres
 //Produccion de acre oscila entre 0 y 6 bushels
+//Probabilidad de que suceda el evento plaga 15%, hay una probabilidad del 50% que un poblador se vea afectado
+//La plaga nunca afecta a los heroes pero mata directo a deficientes
+//Probabilidad de eventos ratas, 40% de probabilidad entre el 25% y el total de grano
 
 class Persona {
     public:
@@ -61,7 +64,12 @@ class Poblacion {
         //>0: produccion de grano
         //-1: no dispones de tantos trabajadores
         //-2: no dispones de tanto grano
-        
+        std::string evento();
+        //eventos que afectan a una poblacion, se devuelve una cadena que
+        //se puede o no imprimir
+        //Eventos:
+        //1: Ataque de ratas
+        //2: Enfermedad
         void info();
 };
 
