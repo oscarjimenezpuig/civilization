@@ -298,21 +298,4 @@ void Poblacion::info() {
 
 
 
-//prueba
 
-using namespace std;
-
-int main() {
-    Poblacion p=Poblacion("Eritrea",10,100,100);
-    p.info();
-    getchar();
-    for(int k=0;k<10;k++) {
-        cout<<"Muertes="<<p.morir()<<endl;
-        cout<<"Nacimientos="<<p.reproducir()<<endl;
-        p.info();
-        p.crecer();
-        cout<<p.evento()<<endl;
-        getchar();
-    }
-    return 0;
-}

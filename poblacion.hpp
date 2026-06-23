@@ -37,7 +37,7 @@ class Persona {
 constexpr Persona PERNUL=Persona(); //Persona nula
 
 class Poblacion {
-    private:
+    protected:
         std::string nom;
         u2 ext; //extension en acres
         u2 gra; //grano en bushels
