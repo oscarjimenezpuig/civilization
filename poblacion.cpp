@@ -193,6 +193,25 @@ bool Poblacion::sol_set(u2 sol) {
     return false;
 }  
 
+short Poblacion::alimentar(u2 gra) {
+    short alimentados=-1;
+    if(gra<=this->gra) {
+        alimentados=0;
+        this->gra-=gra;
+        Vptr it=this->pob.begin();
+        while(it!=this->pob.end() && gra>=GPH) {
+            gra-=GPH;
+            ++alimentados;
+            it++;
+        }
+        while(it!=this->pob.end()) {
+            *it=PERNUL;
+            it++;
+        }
+    }
+    return alimentados;
+}
+
 void Poblacion::crecer() {
     Vptr it=this->pob.begin();
     while(it!=this->pob.end()) {
@@ -241,11 +260,7 @@ short Poblacion::comprar(u2 c,u2 d,u2 p) {
 }
 
 short Poblacion::labrar(u2 t,u2 g) {
-    constexpr u2 APT=10; //acres que labra un trabajador
-    constexpr u2 APB=2; //acres con los que labras un bushel
-    constexpr u1 MAP=6; //maxima produccion por acre
-    constexpr u1 MIP=0; //minima produccion por acre
-    if(t<=this->trb_max()) {
+        if(t<=this->trb_max()) {
         if(g<=this->gra) {
             trb_set(t);
             this->gra-=g;
@@ -260,11 +275,6 @@ short Poblacion::labrar(u2 t,u2 g) {
 }
 
 std::string Poblacion::evento() {
-    constexpr int PER=40; //probabilidad evento ratas
-    constexpr int PEP=15; //probabilidad evento plaga
-    constexpr int PIN=50; //probabilidad de caer enfermo
-    constexpr int TMI=25; //tanto por ciento minimo de perdida por ratas
-    constexpr int TMA=100; //tanto por ciento maximo de perdida por ratas
     std::ostringstream oss;
     if(uniform(0,99)<PEP) {
         oss<<"La enfermedad ha atacado a tu ciudad.";

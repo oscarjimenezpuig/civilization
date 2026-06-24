@@ -42,6 +42,29 @@ void Humano::actuar(u2* td,u2 pt) {
             } else cout<<"No hay tanta tierra disponible..."<<endl;
         }
     }
+    //asignacion de alimentos
+    cout<<"Debes asignar el grano que servira de alimento a tus ciudadanos."<<endl;
+    cout<<"Debes saber que cada individuo necesita "<< GPH << " bushels por año."<<endl;
+    cout<<"Tienes "<<this->gra<<" bushels."<<endl;
+    u2 gra=0;
+    correcto=false;
+    while(!correcto) {
+        if(this->gra>0) {
+            gra=this->pregunta("Introduce el grano asignado para comer");
+        } else {
+            cout<<"ATENCION: Te has quedado sin grano para dar de comer a tu poblacion..."<<endl;
+        }
+        u2 habs=pob_get();
+        short res=this->alimentar(gra);
+        correcto=(res>-1);
+        if(res==habs) {
+            cout<<"PERFECTO!! Has alimentado a toda la poblacion."<<endl;
+        } else if(res<habs) {
+            cout<<"Debido a la hambruna por el mal repartimiento de comida, han muerto "<<habs-res<<" habitantes."<<endl;
+        } else {
+            cout<<"No tienes tanto grano..."<<endl;
+        }
+    }
     //pasa año
     this->year++;
 }

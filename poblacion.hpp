@@ -11,6 +11,18 @@
 //Probabilidad de que suceda el evento plaga 15%, hay una probabilidad del 50% que un poblador se vea afectado
 //La plaga nunca afecta a los heroes pero mata directo a deficientes
 //Probabilidad de eventos ratas, 40% de probabilidad entre el 25% y el total de grano
+//Cada individuo necesita 20 bushels para alimentarse por año
+
+constexpr u2 APT=10; //acres que labra un trabajador
+constexpr u2 APB=2; //acres con los que labras un bushel
+constexpr u1 MAP=6; //maxima produccion por acre
+constexpr u1 MIP=0; //minima produccion por acre
+constexpr int PER=40; //probabilidad evento ratas
+constexpr int PEP=15; //probabilidad evento plaga
+constexpr int PIN=50; //probabilidad de caer enfermo
+constexpr int TMI=25; //tanto por ciento minimo de perdida por ratas
+constexpr int TMA=100; //tanto por ciento maximo de perdida por ratasç
+constexpr u2 GPH=20; //cantidad de grano necesario por habitante
 
 class Persona {
     public:
@@ -52,6 +64,10 @@ class Poblacion {
         u2 sol_max(); //numero maximo de personas que pueden ser soldado
         bool trb_set(u2 trb); //establecer el numero de trabajadores de la ciudad
         bool sol_set(u2 sol); //establecer el numero de soldados de la ciudad
+        short alimentar(u2 gra); 
+        //alimentamos a la poblacion con una cierta cantidad de grano
+        //>=0 numero de habitantes alimentados
+        //-1: El grano dado excede a la poblacion
         void crecer(); //hace crecer a la poblacion (envejecer un año)
         u2 reproducir(); //empareja y reproduce a la poblacion dando el numero de nacimientos
         u2 morir(); //hace morir a la poblacion, dando el numero de muertes
