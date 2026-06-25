@@ -23,6 +23,7 @@ constexpr int PIN=50; //probabilidad de caer enfermo
 constexpr int TMI=25; //tanto por ciento minimo de perdida por ratas
 constexpr int TMA=100; //tanto por ciento maximo de perdida por ratasç
 constexpr u2 GPH=20; //cantidad de grano necesario por habitante
+constexpr u2 PPS=10; //bushels extra que cobra un soldado
 
 class Persona {
     public:
@@ -63,7 +64,12 @@ class Poblacion {
         u2 trb_max(); //numero maximo de personas que pueden ser trabajadores
         u2 sol_max(); //numero maximo de personas que pueden ser soldado
         bool trb_set(u2 trb); //establecer el numero de trabajadores de la ciudad
-        bool sol_set(u2 sol); //establecer el numero de soldados de la ciudad
+        short sol_set(u2 sol); 
+        //establecer el numero de soldados de la ciudad
+        //>=0: numero de soldados contratados
+        //-1: El precio de los soldados excede del grano
+        //-2: Hay mas soldados solicitados que los que hay
+        void hab_unset();//quita la profesion a todos los habitantes
         short alimentar(u2 gra); 
         //alimentamos a la poblacion con una cierta cantidad de grano
         //>=0 numero de habitantes alimentados
@@ -76,7 +82,12 @@ class Poblacion {
         //0: correcto
         //-1: no hay tantos disponibles
         //-2: no tienes grano suficiente para comprar
-        short labrar(u2 trabajadores,u2 grano);
+        short vender(u2 venta,u2 precio);
+        //venta de una serie de acres
+        //>=0: correcto, devuelve ganancia
+        //-1: no dispones de tantos acres
+        //-2: no puedes vender todos los acres
+        short labrar(u2 acres);
         //>0: produccion de grano
         //-1: no dispones de tantos trabajadores
         //-2: no dispones de tanto grano

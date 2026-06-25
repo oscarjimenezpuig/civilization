@@ -170,28 +170,40 @@ bool Poblacion::trb_set(u2 trb) {
     return false;
 } 
 
-bool Poblacion::sol_set(u2 sol) {
-    if(sol<=this->sol_max()) {
-        Vptr it=this->pob.begin();
-        while(it!=this->pob.end() && sol) {
-            if(!it->sol && it->gen==255) {
-                sol--;
-                it->sol=1;
+short Poblacion::sol_set(u2 sol) {
+    u2 precio=sol*PPS;
+    if(precio<=this->gra) {
+        if(sol<=this->sol_max()) {
+            Vptr it=this->pob.begin();
+            while(it!=this->pob.end() && sol) {
+                if(!it->sol && it->gen==255) {
+                    sol--;
+                    it->sol=1;
+                }
+                it++;
             }
-            it++;
-        }
-        it=this->pob.begin();
-        while(it!=this->pob.end() && sol) {
-            if(cansol(*it)) {
-                it->sol=1;
-                sol--;
+            it=this->pob.begin();
+            while(it!=this->pob.end() && sol) {
+                if(cansol(*it)) {
+                    it->sol=1;
+                    sol--;
+                }
+                it++;
             }
-            it++;
-        }
-        return true;
+            this->gra-=precio;
+            return sol;
+        } else return -2;
     }
-    return false;
-}  
+    return -1;
+} 
+
+void Poblacion::hab_unset() {
+    Vptr it=this->pob.begin();
+    while(it!=this->pob.end()) {
+        it->sol=it->trb=0;
+        it++;
+    }
+}
 
 short Poblacion::alimentar(u2 gra) {
     short alimentados=-1;
@@ -259,7 +271,20 @@ short Poblacion::comprar(u2 c,u2 d,u2 p) {
     } else return -1;
 }
 
-short Poblacion::labrar(u2 t,u2 g) {
+short Poblacion::vender(u2 v,u2 p) {
+    short beneficio=0;
+    if(v<this->ext) {
+        beneficio=v*p;
+        this->gra+=beneficio;
+        this->ext-=v;
+    } else if(v==this->ext) beneficio=-2;
+    else beneficio=-1;
+    return beneficio;
+}
+
+short Poblacion::labrar(u2 a) {
+        u2 t=a/APT;
+        u2 g=a/APB;
         if(t<=this->trb_max()) {
         if(g<=this->gra) {
             trb_set(t);
@@ -269,6 +294,7 @@ short Poblacion::labrar(u2 t,u2 g) {
             u2 ext=(ept<epg)?ept:epg;
             short grano=0;
             for(int k=0;k<ext;k++) grano+=uniform(MIP,MAP);
+            this->gra+=grano;
             return grano;
         } else return -2;
     } else return -1;
