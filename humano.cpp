@@ -21,6 +21,7 @@ Humano::Humano(std::string n,u2 hi,u2 ei,u2 gi):Poblacion(n,hi,ei,gi) {};
 
 
 void Humano::actuar(u2* td,u2 pt) {
+    u2 habini=this->pob_get();
     bool correcto=false;
     cout<<"Bienvenido al año "<<this->year<<" de tu reinado en "<<this->nom<<endl;
     data_prt();  
@@ -143,6 +144,31 @@ void Humano::actuar(u2* td,u2 pt) {
             if(this->pob_get()==0) cout<<"Tu ciudad ha quedado completamente vacia..."<<endl;
         } else {
             cout<<"Este año no ha muerto nadie."<<endl;
+        }
+    }
+    //control (para ver si se ha perdido o no)
+    u2 habend=this->pob_get();
+    if(habend==0) {
+        cout<<"HAS PERDIDO TODOS LOS HABITANTES DE TU CIUDAD."<<endl;
+        this->lose=true;
+    } else if(this->ext==0) {
+        cout<<"TU CIUDAD HA DESAPARECIDO."<<endl;
+        this->lose=true;
+    } else {
+        int tpc=(habend-habini)*100/habini;
+        if(tpc>0) {
+            cout<<"La gente de tu ciudad esta contenta, has aumentado la poblacion en "<<tpc<<"%"<<endl;
+        } else if(tpc==0) {
+            cout<<"La eres indiferente a la gente. Tu poblacion se ha mantenido..."<<endl;
+        } else {
+            tpc=-tpc;
+            cout<<"Tu poblacion ha descendido un "<<tpc<<"%"<<endl;
+            if(tpc>CPJ) {
+                cout<<"La gente esta muy descontenta contigo. HAY UNA REVOLUCION EN LA CIUDAD Y TE DERROCAN"<<endl;
+                this->lose=true;
+            } else {
+                cout<<"La gente esta descontenta contigo"<<endl;
+            }
         }
     }
     //pasa año

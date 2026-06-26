@@ -3,9 +3,12 @@
 //Este archivo contiene la clase jugador, heredera de Poblacion para la
 //gestion de una poblacion por un jugador humano
 
+constexpr short CPJ=40; //tanto porciento limite para perder
+
 class Humano : public Poblacion {
     private: 
         u2 year=1;
+        bool lose=false;
         void data_prt(); //imprime los datos
         short pregunta(std::string prg); //hace una pregunta
     public:

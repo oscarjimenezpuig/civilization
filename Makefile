@@ -82,6 +82,6 @@ check:
 #MAKEFILE VARIABLE
 
 NAME = civilization 
-SCRS = general.cpp poblacion.cpp humano.cpp
+SCRS = general.cpp poblacion.cpp humano.cpp ordenador.cpp universo.cpp
 INCLUDES = #-lX11
 
