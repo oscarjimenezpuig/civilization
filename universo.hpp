@@ -10,11 +10,12 @@ class Universo {
     private: 
         u2 gra; //grano disponible para pagar ventas
         u2 ext; //extension sin propietario disponible en el universo
-        u2 hab; //habitantes sin ciudad en el universo
+        vector<Persona> hab; //habitantes sin ciudad en el universo
         Humano ciucju; //
         std::vector<Ordenador> ciucor; //vector que contiene todas las ciudades dirigidas por el ordenador
     public:
         Universo(); //constructor del universo
+        void actuar(); //actuacion de todas las ciudades activas
 };
 
 extern Universo universo;

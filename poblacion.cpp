@@ -318,7 +318,45 @@ std::string Poblacion::evento() {
     }
     std::string res=oss.str();
     return res;
-}           
+}
+
+short Poblacion::derrota() {
+    if(this->ext==0) return -1;
+    else {
+        u2 habs=pob_get();
+        if(habs) return 0;
+        else return -2;
+    }
+}
+
+vector<Persona> Poblacion::emigrar() {
+    vector<Persona> em;
+    u2 haqtc=this->ext/GPH;
+    Vptr it=this->pob.begin();
+    if(haqtc<this->pob) {
+        short ems=haqtc-this->pob;
+        while(it!=this->pob.end() && ems>0) {
+            if(it->gen!=255 && it->eda>15) {
+                em.push_back(*it);
+                --ems;
+            }
+            it++;
+        }
+    } else {
+        while(it!=this->pob.end()) {
+            if(it->gem!=255 && it->trb==0 && it->sol==0 && (cantrb(*it) || cansol(*it))) {
+                em.push_back(*it);
+            }
+            it++;
+        }
+    }
+    return em;
+}
+
+u2 inmigrar(vector<Persona> ps) {
+
+}
+    
 
 void Poblacion::info() {
     std::cout<<this->nom<<std::endl;

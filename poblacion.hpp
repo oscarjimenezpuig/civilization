@@ -97,6 +97,16 @@ class Poblacion {
         //Eventos:
         //1: Ataque de ratas
         //2: Enfermedad
+        short derrota();
+        //analiza si la civilizacion ha sido o no derrotada
+        //0: no hay derrota
+        //-1: no hay tierra
+        //-2: no hay poblacion
+        vector<Persona> emigrar();
+        //da el numero de personas que emigran
+        //se emigra si no trabaja o si no hay alimentos suficientes (los heroes no emigran)
+        void inmigrar(vector<Persona> ps);
+        //llegan personas a la ciudad, todas las del vector ps
         void info();
 };
 
