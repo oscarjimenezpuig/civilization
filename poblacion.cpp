@@ -329,22 +329,39 @@ short Poblacion::derrota() {
     }
 }
 
-vector<Persona> Poblacion::emigrar() {
-    vector<Persona> em;
+u2 Poblacion::recibir() {
+    u2 rec=0;
+    u2 ccs=0; //cantidad de comida de sobra
+    u2 ext=this->ext;
+    u2 gra=this->gra;
+    u2 hbs=this->pob_get();
+    ccs=(gra>hbs*GPH)?gra-hbs*GPH:0;
+    if(ccs) {
+        u2 mtr=APT*this->trb_max();
+        u2 tdl=(ext>mtr)?ext-mtr:0;
+        rec=(tdl>ccs)?ccs:tdl;
+    }
+    return rec;
+}       
+
+std::vector<Persona> Poblacion::emigrar() {
+    std::vector<Persona> em;
     u2 haqtc=this->ext/GPH;
     Vptr it=this->pob.begin();
-    if(haqtc<this->pob) {
-        short ems=haqtc-this->pob;
+    u2 habs=this->pob_get();
+    if(haqtc<habs) {
+        short ems=haqtc-habs;
         while(it!=this->pob.end() && ems>0) {
             if(it->gen!=255 && it->eda>15) {
                 em.push_back(*it);
+                it->gen=0;
                 --ems;
             }
             it++;
         }
     } else {
         while(it!=this->pob.end()) {
-            if(it->gem!=255 && it->trb==0 && it->sol==0 && (cantrb(*it) || cansol(*it))) {
+            if(it->gen!=255 && it->trb==0 && it->sol==0 && (cantrb(*it) || cansol(*it))) {
                 em.push_back(*it);
             }
             it++;
@@ -353,10 +370,15 @@ vector<Persona> Poblacion::emigrar() {
     return em;
 }
 
-u2 inmigrar(vector<Persona> ps) {
-
+u2 Poblacion::inmigrar(std::vector<Persona> ps) {
+    u2 inm=0;
+    Vptr it=ps.begin();
+    while(it!=ps.end()) {
+        if(this->pobins(*it)) ++inm;
+        it++;
+    }
+    return inm;
 }
-    
 
 void Poblacion::info() {
     std::cout<<this->nom<<std::endl;

@@ -21,9 +21,8 @@ Humano::Humano(std::string n,u2 hi,u2 ei,u2 gi):Poblacion(n,hi,ei,gi) {};
 
 
 void Humano::actuar(u2* td,u2 pt) {
-    u2 habini=this->pob_get();
     bool correcto=false;
-    cout<<"Bienvenido al año "<<this->year<<" de tu reinado en "<<this->nom<<endl;
+    cout<<"Es tu turno, reino de "<<this->nom<<"."<<endl;
     data_prt();  
     //compra de tierra
     if(*td) {
@@ -146,36 +145,49 @@ void Humano::actuar(u2* td,u2 pt) {
             cout<<"Este año no ha muerto nadie."<<endl;
         }
     }
-    //control (para ver si se ha perdido o no)
-    u2 habend=this->pob_get();
-    if(habend==0) {
-        cout<<"HAS PERDIDO TODOS LOS HABITANTES DE TU CIUDAD."<<endl;
-        this->lose=true;
-    } else if(this->ext==0) {
-        cout<<"TU CIUDAD HA DESAPARECIDO."<<endl;
-        this->lose=true;
-    } else {
-        int tpc=(habend-habini)*100/habini;
-        if(tpc>0) {
-            cout<<"La gente de tu ciudad esta contenta, has aumentado la poblacion en "<<tpc<<"%"<<endl;
-        } else if(tpc==0) {
-            cout<<"La eres indiferente a la gente. Tu poblacion se ha mantenido..."<<endl;
-        } else {
-            tpc=-tpc;
-            cout<<"Tu poblacion ha descendido un "<<tpc<<"%"<<endl;
-            if(tpc>CPJ) {
-                cout<<"La gente esta muy descontenta contigo. HAY UNA REVOLUCION EN LA CIUDAD Y TE DERROCAN"<<endl;
-                this->lose=true;
-            } else {
-                cout<<"La gente esta descontenta contigo"<<endl;
-            }
-        }
-    }
-    //pasa año
-    this->year++;
 }
 
+std::vector<Persona> Humano::emigrar() {
+    std::vector<Persona> em=this->Poblacion::emigrar();
+    u2 ems=em.size();
+    if(ems>0) {
+        cout<<"Este año, por falta de trabajo o de alimento, "<<ems<<" habitantes emigran de tu ciudad."<<endl;
+    }
+    return em;
+}
 
+void Humano::inmigrar(std::vector<Persona> in) {
+    u2 ins=Poblacion::inmigrar(in);
+    if(ins>0) {
+        cout<<"Este año, buscando una oportunidad, "<<ins<<" personas han venido a tu ciudad."<<endl;
+    }
+}
+
+short Humano::derrota(u2 habini) {
+    short dg=this->Poblacion::derrota();
+    if(dg==0) {
+        if(habini) {
+            u2 habend=this->pob_get();
+            int tpc=(habend-habini)*100/habini;
+            if(tpc>0) {
+                cout<<"La gente de tu ciudad esta contenta, has aumentado la poblacion en "<<tpc<<"%"<<endl;
+            } else if(tpc==0) {
+                cout<<"La eres indiferente a la gente. Tu poblacion se ha mantenido..."<<endl;
+            } else {
+                tpc=-tpc;
+                cout<<"Tu poblacion ha descendido un "<<tpc<<"%"<<endl;
+                if(tpc>CPJ) {
+                    cout<<"La gente esta muy descontenta contigo. HAY UNA REVOLUCION EN LA CIUDAD Y TE DERROCAN"<<endl;
+                    return -4;
+                } else {
+                    cout<<"La gente esta descontenta contigo"<<endl;
+                }
+            }
+        } else cout<<"La gente quiere que sigas dirigiendo tu la ciudad..."<<endl;
+    } else if(dg==-1) cout<<"TU CIUDAD HA DESAPARECIDO."<<endl;
+    else if(dg==-2) cout<<"HAS PERDIDO TODOS LOS HABITANTES DE TU CIUDAD."<<endl;
+    return dg;
+}
 
 //prueba
 

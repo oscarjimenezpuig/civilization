@@ -97,16 +97,18 @@ class Poblacion {
         //Eventos:
         //1: Ataque de ratas
         //2: Enfermedad
+        u2 recibir();
+        //funcion que dice el nombre de inmigrantes que puede recibir la poblacion
+        std::vector<Persona> emigrar();
+        //da el numero de personas que emigran
+        //se emigra si no trabaja o si no hay alimentos suficientes (los heroes no emigran)
+        u2 inmigrar(std::vector<Persona> ps);
+        //se introducen las personas dentro de la poblacion, devuelve el tamaño de ps
         short derrota();
         //analiza si la civilizacion ha sido o no derrotada
         //0: no hay derrota
         //-1: no hay tierra
         //-2: no hay poblacion
-        vector<Persona> emigrar();
-        //da el numero de personas que emigran
-        //se emigra si no trabaja o si no hay alimentos suficientes (los heroes no emigran)
-        void inmigrar(vector<Persona> ps);
-        //llegan personas a la ciudad, todas las del vector ps
         void info();
 };
 

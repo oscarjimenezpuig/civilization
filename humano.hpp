@@ -7,8 +7,6 @@ constexpr short CPJ=40; //tanto porciento limite para perder
 
 class Humano : public Poblacion {
     private: 
-        u2 year=1;
-        bool lose=false;
         void data_prt(); //imprime los datos
         short pregunta(std::string prg); //hace una pregunta
     public:
@@ -16,6 +14,16 @@ class Humano : public Poblacion {
         //construcctor
         void actuar(u2* tierra_disponible,u2 precio_tierra);
         //evolucion de un turno
+        std::vector<Persona> emigrar();
+        //emigran personas de la ciudad del humano
+        void inmigrar(std::vector<Persona> ps);
+        //el conjunto de personas que viene a la ciudad.
+        short derrota(u2 habini=0);
+        //examina si hay derrota en el caso humano
+        //0: no hay derrota
+        //-1: no hay tierra
+        //-2: no hay poblacion
+        //-3: la poblacion ha descendido mas del maximo permitido
 };
 
 
